@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -35,36 +34,13 @@ body {
 }
 
 @keyframes neon-flicker {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    5% {
-        opacity: 0.93;
-    }
-
-    10% {
-        opacity: 0.97;
-    }
-
-    15% {
-        opacity: 0.91;
-    }
-
-    20% {
-        opacity: 0.99;
-    }
-
-    25% {
-        opacity: 0.9;
-    }
-
-    30%,
-    70% {
-        opacity: 1;
-    }
+    0%, 100% {opacity: 1;}
+    5% {opacity: 0.93;}
+    10% {opacity: 0.97;}
+    15% {opacity: 0.91;}
+    20% {opacity: 0.99;}
+    25% {opacity: 0.9;}
+    30%, 70% {opacity: 1;}
 }
 
 .slogan {
@@ -78,30 +54,14 @@ body {
     animation: color-cycle 2.5s linear infinite alternate;
 }
 
-.animated-word:nth-child(2) {
-    animation-delay: .8s;
-}
-
-.animated-word:nth-child(3) {
-    animation-delay: 1.6s;
-}
+.animated-word:nth-child(2) { animation-delay: .8s; }
+.animated-word:nth-child(3) { animation-delay: 1.6s; }
 
 @keyframes color-cycle {
-    0% {
-        color: #f9d423;
-    }
-
-    33% {
-        color: #1fa2ff;
-    }
-
-    66% {
-        color: #f83600;
-    }
-
-    100% {
-        color: #db36a4;
-    }
+    0%   { color: #f9d423;}
+    33%  { color: #1fa2ff;}
+    66%  { color: #f83600;}
+    100% { color: #db36a4;}
 }
 
 #bigFireworkBtn {
@@ -117,7 +77,6 @@ body {
     margin-bottom: 10px;
     transition: transform 0.12s;
 }
-
 #bigFireworkBtn:hover {
     transform: scale(1.08);
     box-shadow: 0 4px 24px #f9d423aa;
@@ -154,16 +113,7 @@ footer a {
     .main-content {
         top: 6%;
     }
-
-    .neon-text {
-        font-size: 2em;
-    }
-
-    .slogan {
-        font-size: 1.07em;
-    }
-
-    #bigFireworkBtn {
-        font-size: 1em;
-    }
+    .neon-text { font-size: 2em; }
+    .slogan { font-size: 1.07em; }
+    #bigFireworkBtn { font-size: 1em; }
 }
