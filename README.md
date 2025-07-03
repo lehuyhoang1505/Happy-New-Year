@@ -1,4 +1,4 @@
-# Chúc Mừng Năm Mới 2025 🎆
+# Chúc Mừng Năm Mới 2026 🎆
 
 Một trang web pháo hoa chúc mừng năm mới, hiệu ứng đẹp mắt, responsive, dễ dàng triển khai trên GitHub Pages.
 
