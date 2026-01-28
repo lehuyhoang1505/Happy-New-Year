@@ -958,12 +958,11 @@
 
 
 
-    <!-- Audio Element -->
-    <audio id="backgroundMusic" loop>
-        <source src="new-year-music.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+    <!-- YouTube Background Music (Hidden) -->
+    <div id="youtubePlayer" style="display: none;"></div>
 
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Particles.js -->
@@ -971,7 +970,11 @@
     <!-- AOS Animation -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- Confetti Script -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <scriptYouTube Player let player; let isPlaying=false; function onYouTubeIframeAPIReady() { player=new
+        YT.Player('youtubePlayer', { height: '0' , width: '0' , videoId: 'QxqzNoRTfuw' , playerVars: { 'autoplay' :
+        0, 'loop' : 1, 'playlist' : 'QxqzNoRTfuw' }, events: { 'onReady' : onPlayerReady } }); } function
+        onPlayerReady(event) { // Player is ready } //
+        src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></scriptYouTube>
     <script>
         // Initialize AOS
         AOS.init({

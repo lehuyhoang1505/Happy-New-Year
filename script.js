@@ -150,7 +150,6 @@ function getTetDate(solarYear) {
 
 // ===== Global Variables =====
 let musicPlaying = false;
-const music = document.getElementById('backgroundMusic');
 const musicBtn = document.getElementById('musicBtn');
 const musicIcon = document.getElementById('musicIcon');
 const wishBtn = document.getElementById('wishBtn');
@@ -348,8 +347,8 @@ function triggerNewYearCelebration(isLunar = false, year = 2027, canChi = '') {
     messageElement.classList.add('show');
 
     // Play celebration sound if music is enabled
-    if (musicPlaying) {
-        music.volume = 0.7;
+    if (musicPlaying && player && typeof player.setVolume === 'function') {
+        player.setVolume(70);
     }
 
     // Trigger intense fireworks for 20 seconds
@@ -399,18 +398,20 @@ function stopIntenseFireworks() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// ===== Music Control =====
+// ===== Music Control (YouTube Player) =====
 musicBtn.addEventListener('click', () => {
+    if (!player || typeof player.playVideo !== 'function') {
+        alert('Đang tải nhạc, vui lòng chờ...');
+        return;
+    }
+
     if (musicPlaying) {
-        music.pause();
+        player.pauseVideo();
         musicIcon.textContent = '🔇';
         musicBtn.innerHTML = '<span id="musicIcon">🔇</span> Tắt nhạc';
         musicPlaying = false;
     } else {
-        music.play().catch(e => {
-            console.log('Auto-play prevented:', e);
-            alert('Vui lòng nhấn nút để phát nhạc!');
-        });
+        player.playVideo();
         musicIcon.textContent = '🔊';
         musicBtn.innerHTML = '<span id="musicIcon">🔊</span> Bật nhạc';
         musicPlaying = true;
