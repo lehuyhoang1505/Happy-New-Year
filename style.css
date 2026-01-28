@@ -1,0 +1,773 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 50%, #ff8c42 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Fireworks Canvas */
+#fireworks {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* New Year Celebration Message */
+.new-year-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+.new-year-message.show {
+    opacity: 1;
+}
+
+.celebration-text {
+    font-family: 'Lobster', cursive;
+    font-size: 5rem;
+    color: #ffd700;
+    text-shadow:
+        0 0 20px rgba(255, 215, 0, 1),
+        0 0 40px rgba(255, 215, 0, 0.8),
+        3px 3px 0 #ff6b6b,
+        6px 6px 0 #ff8c42,
+        9px 9px 30px rgba(0, 0, 0, 0.5);
+    animation: celebrationPulse 2s infinite, celebrationFloat 3s ease-in-out infinite;
+    margin: 0;
+    padding: 20px 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 30px;
+    border: 5px solid #ffd700;
+}
+
+.celebration-subtext {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5rem;
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    margin-top: 20px;
+    animation: celebrationFloat 3s ease-in-out infinite 0.5s;
+}
+
+.celebration-lunar {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    color: #ff6b9d;
+    font-weight: 700;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+    margin-top: 15px;
+    animation: celebrationFloat 3s ease-in-out infinite 1s;
+}
+
+@keyframes celebrationPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes celebrationFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@media (max-width: 768px) {
+    .celebration-text {
+        font-size: 2.5rem;
+        padding: 15px 25px;
+    }
+
+    .celebration-subtext {
+        font-size: 1.5rem;
+    }
+
+    .celebration-lunar {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .celebration-text {
+        font-size: 1.8rem;
+        padding: 12px 20px;
+    }
+
+    .celebration-subtext {
+        font-size: 1.2rem;
+    }
+
+    .celebration-lunar {
+        font-size: 1rem;
+    }
+}
+
+/* Main Container */
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Clock Container - Always visible with high z-index */
+.clock-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px);
+    padding: 20px 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.3);
+    border: 3px solid #ffd700;
+    z-index: 9999;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 280px;
+    cursor: pointer;
+}
+
+.clock-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+/* Collapsed state */
+.clock-container.collapsed {
+    padding: 12px 20px;
+    min-width: 140px;
+    opacity: 0.7;
+    background: rgba(0, 0, 0, 0.7);
+    transform: scale(0.9);
+}
+
+.clock-container.collapsed:hover {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Hide elements when collapsed */
+.clock-container.collapsed #countdown,
+.clock-container.collapsed .lunar-calendar {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+#countdown,
+.lunar-calendar {
+    max-height: 200px;
+    opacity: 1;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+#clock {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.8);
+    letter-spacing: 2px;
+}
+
+#countdown {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #ffffff;
+    margin-top: 8px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Lunar Calendar Styles */
+.lunar-calendar {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.lunar-info,
+.lunar-year {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: #ff6b9d;
+    margin: 5px 0;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.lunar-year {
+    color: #ff8c42;
+    font-size: 1rem;
+}
+
+.lunar-label {
+    color: #a0d8ef;
+    font-weight: 500;
+    margin-right: 5px;
+}
+
+/* Main Title */
+.main-title {
+    font-family: 'Lobster', cursive;
+    font-size: 4rem;
+    color: #fff;
+    text-shadow:
+        3px 3px 0 #ff6b6b,
+        6px 6px 0 #ffd93d,
+        9px 9px 0 #ff8c42,
+        12px 12px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 50px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.animate-title {
+    animation: fadeInScale 1s ease-out, bounce 2s infinite 1s;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Wishes Container */
+.wishes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+    width: 100%;
+    max-width: 900px;
+}
+
+.wish-item {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 3px solid #ffd93d;
+}
+
+.wish-item:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.wish-item .emoji {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+    animation: rotate 3s infinite;
+}
+
+@keyframes rotate {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-10deg);
+    }
+
+    75% {
+        transform: rotate(10deg);
+    }
+}
+
+.wish-item .wish-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #ff6b6b;
+    display: block;
+}
+
+.animate-fade-in {
+    animation: fadeInUp 1s ease-out backwards;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sender Name */
+.sender-name {
+    margin: 40px 0;
+    font-size: 1.5rem;
+    color: #fff;
+    background: rgba(255, 107, 107, 0.8);
+    padding: 20px 40px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+}
+
+.sender-name strong {
+    font-family: 'Lobster', cursive;
+    font-size: 1.8rem;
+    color: #ffd93d;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Control Buttons */
+.controls {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.btn {
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.btn-music {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-wish {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.btn-share {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+}
+
+.btn:active {
+    transform: translateY(-2px);
+}
+
+/* Decorations */
+.decorations {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.deco {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    opacity: 0.7;
+    animation: float 6s ease-in-out infinite;
+}
+
+.deco-1 {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.deco-2 {
+    top: 20%;
+    right: 10%;
+    animation-delay: 1s;
+}
+
+.deco-3 {
+    bottom: 20%;
+    left: 15%;
+    animation-delay: 2s;
+}
+
+.deco-4 {
+    bottom: 15%;
+    right: 15%;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-30px) rotate(10deg);
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #fff5f5 0%, #fffef0 100%);
+    margin: 5% auto;
+    padding: 40px;
+    border: 3px solid #ffd93d;
+    border-radius: 30px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    animation: slideDown 0.5s;
+    position: relative;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h2 {
+    font-family: 'Lobster', cursive;
+    color: #ff6b6b;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.close,
+.close-share {
+    color: #ff6b6b;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+.close:hover,
+.close-share:hover {
+    color: #ff8c42;
+}
+
+.modal-wishes p {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 15px 0;
+    padding-left: 10px;
+    border-left: 4px solid #ffd93d;
+}
+
+/* Share Options */
+.share-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.share-btn {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.copy-message {
+    text-align: center;
+    color: #4caf50;
+    font-weight: 600;
+    margin-top: 15px;
+    min-height: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.5rem;
+        text-shadow:
+            2px 2px 0 #ff6b6b,
+            4px 4px 0 #ffd93d,
+            6px 6px 0 #ff8c42,
+            8px 8px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .clock-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        left: auto;
+        padding: 15px 20px;
+        margin-bottom: 0;
+        min-width: 240px;
+    }
+
+    .clock-container.collapsed {
+        padding: 10px 15px;
+        min-width: 120px;
+    }
+
+    #clock {
+        font-size: 1.5rem;
+    }
+
+    .clock-container.collapsed #clock {
+        font-size: 1.3rem;
+    }
+
+    #countdown {
+        font-size: 0.8rem;
+    }
+
+    .lunar-info,
+    .lunar-year {
+        font-size: 0.8rem;
+    }
+
+    .wishes-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .wish-item {
+        padding: 25px 15px;
+    }
+
+    .wish-item .emoji {
+        font-size: 2.5rem;
+    }
+
+    .wish-item .wish-text {
+        font-size: 1.1rem;
+    }
+
+    .sender-name {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+    }
+
+    .sender-name strong {
+        font-size: 1.5rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    .deco {
+        width: 50px;
+        height: 50px;
+    }
+
+    .modal-content {
+        padding: 30px 20px;
+        margin: 10% auto;
+    }
+
+    .modal-content h2 {
+        font-size: 2rem;
+    }
+
+    .modal-wishes p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        padding-top: 180px;
+    }
+
+    .clock-container.collapsed~.container {
+        padding-top: 80px;
+    }
+
+    .clock-container {
+        padding: 12px 18px;
+        min-width: 200px;
+        top: 5px;
+        right: 5px;
+    }
+
+    .clock-container.collapsed {
+        padding: 8px 12px;
+        min-width: 100px;
+    }
+
+    #clock {
+        font-size: 1.3rem;
+    }
+
+    .clock-container.collapsed #clock {
+        font-size: 1.1rem;
+    }
+
+    #countdown {
+        font-size: 0.7rem;
+    }
+
+    .lunar-info,
+    .lunar-year {
+        font-size: 0.7rem;
+    }
+
+    .main-title {
+        font-size: 2rem;
+    }
+
+    .wish-item .emoji {
+        font-size: 2rem;
+    }
+
+    .wish-item .wish-text {
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 25px 15px;
+    }
+}
+
+/* Blinking Animation */
+@keyframes blink {
+
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+
+    25%,
+    75% {
+        opacity: 0.5;
+    }
+}
+
+.blink {
+    animation: blink 2s infinite;
+}
